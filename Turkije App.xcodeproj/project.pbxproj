@@ -144,9 +144,9 @@
 		D59780722163E95E009B6B11 /* Turkije App */ = {
 			isa = PBXGroup;
 			children = (
+				D5882E93218A433600A00517 /* Valuta */,
 				D5882EB9218B745F00A00517 /* WeerPerDag */,
 				D5882EA4218B744A00A00517 /* WeerPer3Uur */,
-				D5882E93218A433600A00517 /* Valuta */,
 				D5882E85218A064900A00517 /* Assets.xcassets */,
 				D59780732163E95E009B6B11 /* AppDelegate.swift */,
 				D59780752163E95E009B6B11 /* ViewController.swift */,
