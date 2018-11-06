@@ -8,19 +8,19 @@
 
 import UIKit
 import CoreLocation
+import UserNotifications
 
 class HomeController: UIViewController {
     @IBOutlet weak var locationLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        enableLocationServices()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         super.viewWillAppear(animated)
-        
-        enableLocationServices()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,23 +73,39 @@ class HomeController: UIViewController {
         }
         locationManager.delegate = self as? CLLocationManagerDelegate
         locationManager.startMonitoringSignificantLocationChanges()
-        locationManager.stopUpdatingLocation()
         locationManager.startUpdatingLocation()
         
         let location = locationManager.location
-        
-        fetchCityAndCountry(from: location!) { city, country, error in
-            guard let city = city, let country = country, error == nil else { return }
-            self.locationLabel.text = city + ", " + country
-        }
-        
+        updateLocation(location: location!, boolean: true)
+    }
+    
+    func updateLocation(location: CLLocation, boolean: Bool) {
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error)-> Void in
+            if error != nil {
+                return
+            }
+            
+            if placemarks!.count > 0 {
+                let placemark = placemarks![0]
+                self.locationLabel.text = placemark.locality! + ", " + placemark.country!
+                //if placemark.locality! !== previousCity) {
+                    // Send push notification
+                    let notification = UNMutableNotificationContent()
+                notification.body = "Your current location is: " + placemark.locality! + ", " + placemark.country!
+                    
+                    let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                    let request = UNNotificationRequest(identifier: "notification1", content: notification, trigger: notificationTrigger)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                }
+            /*} else {
+                print("No placemarks found.")
+            }*/
+        })
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         let lastLocation = locations.last!
-        locationLabel.text = String(lastLocation.coordinate.latitude)
-        // Do something with the location.
-        print(lastLocation)
+        updateLocation(location: lastLocation, boolean: false)
     }
     
     func fetchCityAndCountry(from location: CLLocation, completion: @escaping (_ city: String?, _ country:  String?, _ error: Error?) -> ()) {

@@ -12,7 +12,7 @@ class ValutaController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //Get list
         let url = URL(string: "https://frankfurter.app/latest?from=EUR")
         var request = NSMutableURLRequest(url: url! as URL, cachePolicy: NSURLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: Double.infinity)
