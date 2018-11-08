@@ -26,6 +26,26 @@ class Weer: UIViewController {
     var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
+        if(!Reachability.isConnectedToNetwork()){
+            let alert = UIAlertController(title: "Geen internet", message: "Je kunt deze pagina niet bekijken zonder internet.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                switch action.style{
+                case .default:
+                    self.navigationController?.popViewController(animated: true)
+                    print("default")
+                    
+                case .cancel:
+                    print("cancel")
+                    
+                case .destructive:
+                    print("destructive")
+                    
+                    
+                }}))
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+        
         bgScrollView.backgroundColor = UIColor.black
         super.viewDidLoad()
         let cityName = UserDefaults.standard.object(forKey: "cityName") as! String
@@ -288,14 +308,14 @@ class Weer: UIViewController {
             weatherImageView.autoresizingMask = []
             weatherImageView.image = UIImage(named: largeWeatherImage)
             bgImage.image = UIImage(named: largeWeatherBg)
-            temperatureLabel.text = String(stringInterpolationSegment: roundToPlaces(value: temperature!, places: 0))+"°"
+            temperatureLabel.text = String(stringInterpolationSegment: roundToPlaces(value: temperature ?? 0, places: 0))+"°"
         
             let contentWidth = 1620
             scrollView.contentSize = CGSize(width: contentWidth, height: 50)
             var xCoordinate = 30
             var listCount = 0;
             for listItem in weer.list! {
-                let temp = String(roundToPlaces(value: (listItem.main?.temp!)!, places: 0))+"°"
+                let temp = String(roundToPlaces(value: (listItem.main?.temp ?? 0)!, places: 0))+"°"
                 let timestamp = listItem.dt
                 let imageId = getWeatherIconById(id: listItem.weather![0].id!)
                 
