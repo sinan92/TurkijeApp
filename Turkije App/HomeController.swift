@@ -91,29 +91,18 @@ class HomeController: UIViewController {
                 //if placemark.locality! !== previousCity) {
                     // Send push notification
                     let notification = UNMutableNotificationContent()
-                notification.body = "Your current location is: " + placemark.locality! + ", " + placemark.country!
+                    notification.body = "Your current location is: " + placemark.locality! + ", " + placemark.country!
                     
                     let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
                     let request = UNNotificationRequest(identifier: "notification1", content: notification, trigger: notificationTrigger)
                     UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                 }
-            /*} else {
-                print("No placemarks found.")
-            }*/
         })
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         let lastLocation = locations.last!
         updateLocation(location: lastLocation, boolean: false)
-    }
-    
-    func fetchCityAndCountry(from location: CLLocation, completion: @escaping (_ city: String?, _ country:  String?, _ error: Error?) -> ()) {
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-            completion(placemarks?.first?.locality,
-                       placemarks?.first?.country,
-                       error)
-        }
     }
     
     /*

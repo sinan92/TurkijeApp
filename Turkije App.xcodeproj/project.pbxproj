@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D54958EB2192356E00EB0517 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D54958EA2192356E00EB0517 /* MapKit.framework */; };
 		D5882E84218A045600A00517 /* fa-regular-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5882E83218A045600A00517 /* fa-regular-400.ttf */; };
 		D5882E86218A064900A00517 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5882E85218A064900A00517 /* Assets.xcassets */; };
 		D5882E88218A08AD00A00517 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5882E87218A08AD00A00517 /* fa-solid-900.ttf */; };
@@ -40,6 +41,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D54958EA2192356E00EB0517 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		D54958EE219235A900EB0517 /* Turkije App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Turkije App.entitlements"; sourceTree = "<group>"; };
 		D5882E83218A045600A00517 /* fa-regular-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fa-regular-400.ttf"; path = "../fontawesome-free-5.4.2-web/webfonts/fa-regular-400.ttf"; sourceTree = "<group>"; };
 		D5882E85218A064900A00517 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../Assets.xcassets; sourceTree = "<group>"; };
 		D5882E87218A08AD00A00517 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fa-solid-900.ttf"; path = "../fontawesome-free-5.4.2-web/webfonts/fa-solid-900.ttf"; sourceTree = "<group>"; };
@@ -79,12 +82,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D54958EB2192356E00EB0517 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D54958E92192356E00EB0517 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D54958EA2192356E00EB0517 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D5882E93218A433600A00517 /* Valuta */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +142,7 @@
 				D5882E83218A045600A00517 /* fa-regular-400.ttf */,
 				D59780722163E95E009B6B11 /* Turkije App */,
 				D59780712163E95E009B6B11 /* Products */,
+				D54958E92192356E00EB0517 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,6 +157,7 @@
 		D59780722163E95E009B6B11 /* Turkije App */ = {
 			isa = PBXGroup;
 			children = (
+				D54958EE219235A900EB0517 /* Turkije App.entitlements */,
 				D5882E93218A433600A00517 /* Valuta */,
 				D5882EB9218B745F00A00517 /* WeerPerDag */,
 				D5882EA4218B744A00A00517 /* WeerPer3Uur */,
@@ -195,6 +209,17 @@
 				TargetAttributes = {
 					D597806F2163E95E009B6B11 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.WAC = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class Weer: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
@@ -20,6 +21,9 @@ class Weer: UIViewController {
     @IBOutlet weak var bgScrollView: UIScrollView!
     var weerItems3Uur : [HourlyWeatherItem] = []
     var weerItemsDag : [DailyWeatherItem] = []
+    let synth = AVSpeechSynthesizer()
+    var temperature : Double?
+    var myUtterance = AVSpeechUtterance(string: "")
     
     override func viewDidLoad() {
         bgScrollView.backgroundColor = UIColor.black
@@ -258,7 +262,7 @@ class Weer: UIViewController {
         for weer in self.weerItems3Uur {
             let name = weer.city?.name
             let weatherType = weer.list![0].weather![0].id
-            let temperature = weer.list![0].main?.temp
+            temperature = weer.list![0].main?.temp
             let largeWeatherImage = getWeatherIconById(id: weatherType!)["icon-large"]!
             let largeWeatherBg = getWeatherIconById(id: weatherType!)["bg"]!
         
@@ -376,6 +380,16 @@ class Weer: UIViewController {
     
     @IBAction func selecteerRegioButton(_ sender: AnyObject) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if(event!.subtype == .motionShake) {
+            let textToSpeak = "Het is op het moment " + String(format: "%.0f",temperature!) + " graden in " + cityNameLabel.text!
+            myUtterance = AVSpeechUtterance(string: textToSpeak)
+            myUtterance.rate = 0.45
+            myUtterance.voice = AVSpeechSynthesisVoice(language: "nl-NL")
+            synth.speak(myUtterance)
+        }
     }
     
 }

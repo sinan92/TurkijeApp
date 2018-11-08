@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import CoreLocation
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        enableLocationServices()
         return true
     }
 
@@ -28,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        enableLocationServices()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -72,6 +76,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
+    
+    
+    
+    let locationManager = CLLocationManager()
+    func enableLocationServices() {
+        locationManager.delegate = self as? CLLocationManagerDelegate
+        
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestAlwaysAuthorization()
+            break
+            
+        case .restricted, .denied:
+            // Disable location features
+            locationManager.requestAlwaysAuthorization()
+            break
+            
+        case .authorizedWhenInUse:
+            // Enable basic location features
+            startReceivingSignificantLocationChanges()
+            break
+            
+        case .authorizedAlways:
+            // Enable any of your app's location features
+            startReceivingSignificantLocationChanges()
+            break
+        }
+    }
+    
+    func startReceivingSignificantLocationChanges() {
+        let authorizationStatus = CLLocationManager.authorizationStatus()
+        if authorizationStatus != .authorizedAlways {
+            // User has not authorized access to location information.
+            return
+        }
+        
+        if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            // The service is not available.
+            return
+        }
+        locationManager.delegate = self as? CLLocationManagerDelegate
+        locationManager.startMonitoringSignificantLocationChanges()
+        locationManager.startUpdatingLocation()
+        
+        let location = locationManager.location
+        updateLocation(location: location!, boolean: true)
+    }
+    
+    func updateLocation(location: CLLocation, boolean: Bool) {
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error)-> Void in
+            if error != nil {
+                return
+            }
+            
+            if placemarks!.count > 0 {
+                let placemark = placemarks![0]
+                //self.locationLabel.text = placemark.locality! + ", " + placemark.country!
+                //if placemark.locality! !== previousCity) {
+                // Send push notification
+                let notification = UNMutableNotificationContent()
+                notification.body = "Je huidige locatie is: " + placemark.locality! + ", " + placemark.country!
+                
+                let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+                let request = UNNotificationRequest(identifier: "notification1", content: notification, trigger: notificationTrigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+            }
+            /*} else {
+             print("No placemarks found.")
+             }*/
+        })
+    }
+    
+    func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+        let lastLocation = locations.last!
+        updateLocation(location: lastLocation, boolean: false)
+    }
 
     // MARK: - Core Data Saving support
 
