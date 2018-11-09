@@ -28,23 +28,7 @@ class Weer: UIViewController {
     
     override func viewDidLoad() {
         if(!Reachability.isConnectedToNetwork()){
-            let alert = UIAlertController(title: "Geen internet", message: "Je kunt deze pagina niet bekijken zonder internet.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                switch action.style{
-                case .default:
-                    self.navigationController?.popViewController(animated: true)
-                    print("default")
-                    
-                case .cancel:
-                    print("cancel")
-                    
-                case .destructive:
-                    print("destructive")
-                    
-                    
-                }}))
-            self.present(alert, animated: true, completion: nil)
-            
+            self.showAlert(title: "Geen internet", message: "Je kunt deze pagina niet bekijken zonder internet.")
         }
         
         bgScrollView.backgroundColor = UIColor.init(red: 51/255, green: 51/255, blue: 51/255, alpha: 0)
@@ -60,16 +44,20 @@ class Weer: UIViewController {
         let session = URLSession.shared
         
         let task = session.dataTask(with: request as URLRequest,
-                                    completionHandler: { data, response, error -> Void in
-                                        do {
-                                                let jsonDecoder = JSONDecoder()
-                                                self.weerItemsDag = try [jsonDecoder.decode(DailyWeatherItem.self, from: data!)]
-                                                
-                                                //Retrieved JSON
-                                                //Get daily weather items
-                                                self.getDailyWeatherItems(cityName: cityName)
-                                            
-                                        } catch { print(error) }
+            completionHandler: { data, response, error -> Void in
+                do {
+                        let jsonDecoder = JSONDecoder()
+                        guard let dataValues = data else {
+                            self.showAlert(title: "Geen internet", message: "Je kunt deze pagina niet bekijken zonder internet.")
+                            return
+                        }
+                        self.weerItemsDag = try [jsonDecoder.decode(DailyWeatherItem.self, from: dataValues)]
+                    
+                        //Retrieved JSON
+                        //Get daily weather items
+                        self.getDailyWeatherItems(cityName: cityName)
+                    
+                } catch { print(error) }
         })
         task.resume()
         
@@ -82,19 +70,23 @@ class Weer: UIViewController {
         let session2 = URLSession.shared
         
         let task2 = session2.dataTask(with: request2 as URLRequest,
-                                    completionHandler: { data, response, error -> Void in
-                                        do {
-                                                let jsonDecoder = JSONDecoder()
-                                                self.weerItems3Uur = try [jsonDecoder.decode(HourlyWeatherItem.self, from: data!)]
-                                                
-                                                //Retrieved JSON
-                                                //Get weather items and define static values of the day
-                                            
-                                                DispatchQueue.main.async {
-                                                    self.getWeatherItemsPer3Hours(cityName: cityName)
-                                                }
-                                            
-                                        } catch { print(error) }
+            completionHandler: { data, response, error -> Void in
+                do {
+                        let jsonDecoder = JSONDecoder()
+                        guard let dataValues = data else {
+                            self.showAlert(title: "Geen internet", message: "Je kunt deze pagina niet bekijken zonder internet.")
+                            return
+                        }
+                        self.weerItems3Uur = try [jsonDecoder.decode(HourlyWeatherItem.self, from: dataValues)]
+                    
+                        //Retrieved JSON
+                        //Get weather items and define static values of the day
+                    
+                        DispatchQueue.main.async {
+                            self.getWeatherItemsPer3Hours(cityName: cityName)
+                        }
+                    
+                } catch { print(error) }
         })
         task2.resume()
 
@@ -457,6 +449,25 @@ class Weer: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent // .default
+    }
+    
+    func showAlert(title: String, message: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                self.navigationController?.popViewController(animated: true)
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+                
+                
+            }}))
+        self.present(alert, animated: true, completion: nil)
     }
     
 }
