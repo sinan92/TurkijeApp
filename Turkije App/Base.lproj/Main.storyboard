@@ -606,6 +606,7 @@
                                             <constraint firstAttribute="height" constant="43" id="GWG-N2-Cym"/>
                                         </constraints>
                                         <state key="normal" title="Selecteer regio">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -644,6 +645,7 @@
                                 <constraints>
                                     <constraint firstItem="moH-x4-5ab" firstAttribute="centerX" secondItem="eAP-fj-pEn" secondAttribute="centerX" id="1vR-XC-Xxi"/>
                                     <constraint firstItem="eAP-fj-pEn" firstAttribute="top" secondItem="qum-W3-p1a" secondAttribute="bottom" constant="59" id="5In-5F-6M2"/>
+                                    <constraint firstItem="FtM-kt-YKv" firstAttribute="leading" secondItem="U4u-qK-34F" secondAttribute="leading" id="9iO-hY-iCd"/>
                                     <constraint firstItem="dU4-Wv-jmK" firstAttribute="top" secondItem="FtM-kt-YKv" secondAttribute="bottom" id="AzP-ZI-HCz"/>
                                     <constraint firstItem="moH-x4-5ab" firstAttribute="top" secondItem="bGT-2V-H72" secondAttribute="bottom" id="HGz-U7-nyE"/>
                                     <constraint firstItem="bGT-2V-H72" firstAttribute="top" secondItem="dU4-Wv-jmK" secondAttribute="bottom" id="HXO-y5-ZBp"/>
@@ -662,6 +664,7 @@
                                     <constraint firstItem="bGT-2V-H72" firstAttribute="leading" secondItem="U4u-qK-34F" secondAttribute="leading" id="Vvc-Mr-0gO"/>
                                     <constraint firstAttribute="trailing" secondItem="moH-x4-5ab" secondAttribute="trailing" id="Xjv-Wi-Ojd"/>
                                     <constraint firstItem="tYL-P7-oE0" firstAttribute="centerY" secondItem="U4u-qK-34F" secondAttribute="centerY" id="ZLm-BL-R7E"/>
+                                    <constraint firstAttribute="trailing" secondItem="FtM-kt-YKv" secondAttribute="trailing" id="dgy-f7-4p4"/>
                                     <constraint firstItem="Orb-zN-VwJ" firstAttribute="centerX" secondItem="U4u-qK-34F" secondAttribute="centerX" id="gc5-8D-N9n"/>
                                     <constraint firstItem="qum-W3-p1a" firstAttribute="top" secondItem="bD3-pb-Eex" secondAttribute="bottom" constant="19" id="hDT-Dp-oLC"/>
                                     <constraint firstAttribute="bottom" secondItem="moH-x4-5ab" secondAttribute="bottom" id="lkr-dW-UWV"/>
@@ -678,7 +681,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="U4u-qK-34F" secondAttribute="trailing" id="93U-4y-sVS"/>
                             <constraint firstItem="U4u-qK-34F" firstAttribute="leading" secondItem="ruA-8M-fFE" secondAttribute="leading" id="bnq-ef-49N"/>

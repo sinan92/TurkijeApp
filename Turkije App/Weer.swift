@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreImage
 
 class Weer: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
@@ -46,7 +47,7 @@ class Weer: UIViewController {
             
         }
         
-        bgScrollView.backgroundColor = UIColor.black
+        bgScrollView.backgroundColor = UIColor.init(red: 51/255, green: 51/255, blue: 51/255, alpha: 0)
         super.viewDidLoad()
         let cityName = UserDefaults.standard.object(forKey: "cityName") as! String
         
@@ -308,6 +309,45 @@ class Weer: UIViewController {
             weatherImageView.autoresizingMask = []
             weatherImageView.image = UIImage(named: largeWeatherImage)
             bgImage.image = UIImage(named: largeWeatherBg)
+            /*
+            //Add guassian blur to background
+            guard let image = bgImage.image, let cgimg = image.cgImage else {
+                print("imageView doesn't have an image!")
+                return
+            }
+            let coreImage = CIImage(cgImage:cgimg)
+            
+            let h = coreImage.extent.size.height
+            let w = coreImage.extent.size.width
+ 
+            
+            guard let radialMask = CIFilter(name:"CIRadialGradient") else {
+                return
+            }
+            
+            let imageCenter = CIVector(x:0.55 * w, y:0.6 * h)
+            radialMask.setValue(imageCenter, forKey:kCIInputCenterKey)
+            radialMask.setValue(0.2 * h, forKey:"inputRadius0")
+            radialMask.setValue(0.3 * h, forKey:"inputRadius1")
+            radialMask.setValue(CIColor(red:0, green:1, blue:0, alpha:0),
+                                forKey:"inputColor0")
+            radialMask.setValue(CIColor(red:0, green:1, blue:0, alpha:1),
+                                forKey:"inputColor1")
+            
+            guard let maskedVariableBlur = CIFilter(name:"CIMaskedVariableBlur") else {
+                print("CIMaskedVariableBlur does not exist")
+                return 
+            }
+            maskedVariableBlur.setValue(coreImage, forKey: kCIInputImageKey)
+            
+            maskedVariableBlur.setValue(10, forKey: kCIInputRadiusKey)
+            maskedVariableBlur.setValue(radialMask.outputImage, forKey: "inputMask")
+            guard let selectivelyFocusedCIImage = maskedVariableBlur.outputImage else {
+                print("Setting maskedVariableBlur failed")
+                return
+            }
+            bgImage.image = UIImage(ciImage: selectivelyFocusedCIImage)
+            */
             temperatureLabel.text = String(stringInterpolationSegment: roundToPlaces(value: temperature ?? 0, places: 0))+"°"
         
             let contentWidth = 1620
@@ -410,6 +450,10 @@ class Weer: UIViewController {
             myUtterance.voice = AVSpeechSynthesisVoice(language: "nl-NL")
             synth.speak(myUtterance)
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent // .default
     }
     
 }

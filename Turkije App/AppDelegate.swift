@@ -121,8 +121,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.startMonitoringSignificantLocationChanges()
         locationManager.startUpdatingLocation()
         
-        let location = locationManager.location
-        updateLocation(location: location!, boolean: true)
+        guard let location = locationManager.location else {
+            print("No location found.")
+            return
+        }
+        updateLocation(location: location, boolean: true)
     }
     
     func updateLocation(location: CLLocation, boolean: Bool) {

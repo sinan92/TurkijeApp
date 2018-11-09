@@ -28,6 +28,10 @@ class HomeController: UIViewController {
         super.viewWillDisappear(animated)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent // .default
+    }
+    
     let locationManager = CLLocationManager()
     func enableLocationServices() {
         locationManager.delegate = self as? CLLocationManagerDelegate
@@ -75,8 +79,11 @@ class HomeController: UIViewController {
         locationManager.startMonitoringSignificantLocationChanges()
         locationManager.startUpdatingLocation()
         
-        let location = locationManager.location
-        updateLocation(location: location!, boolean: true)
+        guard let location = locationManager.location else {
+            print("No location found")
+            return
+        }
+        updateLocation(location: location, boolean: true)
     }
     
     func updateLocation(location: CLLocation, boolean: Bool) {

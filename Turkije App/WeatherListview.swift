@@ -99,4 +99,9 @@ class WeatherListview: UITableViewController {
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        self.navigationController?.navigationBar.barStyle = .black
+        return .lightContent // .default
+    }
+    
 }
