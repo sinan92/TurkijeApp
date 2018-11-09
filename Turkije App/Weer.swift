@@ -309,7 +309,7 @@ class Weer: UIViewController {
             weatherImageView.autoresizingMask = []
             weatherImageView.image = UIImage(named: largeWeatherImage)
             bgImage.image = UIImage(named: largeWeatherBg)
-            /*
+            
             //Add guassian blur to background
             guard let image = bgImage.image, let cgimg = image.cgImage else {
                 print("imageView doesn't have an image!")
@@ -346,8 +346,11 @@ class Weer: UIViewController {
                 print("Setting maskedVariableBlur failed")
                 return
             }
-            bgImage.image = UIImage(ciImage: selectivelyFocusedCIImage)
-            */
+            let ciCtx = CIContext()
+            let cgiig = ciCtx.createCGImage(selectivelyFocusedCIImage, from: coreImage.extent)
+            let uiImage = UIImage(cgImage: cgiig!)
+            bgImage.image = uiImage
+            
             temperatureLabel.text = String(stringInterpolationSegment: roundToPlaces(value: temperature ?? 0, places: 0))+"°"
         
             let contentWidth = 1620
