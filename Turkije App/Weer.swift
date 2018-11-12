@@ -409,8 +409,11 @@ class Weer: UIViewController {
             dayLabel.font = UIFont(name: "Helvetica Neue", size: 10)
             self.weatherByDayLabel.addSubview(dayLabel)
             
-            let image = UIImage(named: imageId["icon"]!)
-            let typeImage = UIImageView(image: image!)
+            guard let image = UIImage(named: imageId["icon"]!) else {
+                self.showAlert(title: "Image not found", message: "The image could not be found.")
+                return
+            }
+            let typeImage = UIImageView(image: image)
             typeImage.frame = CGRect(x: Int(self.view.frame.size.width/2), y: coordinateY-5, width: 12, height: 12)
             self.weatherByDayLabel.addSubview(typeImage)
             
